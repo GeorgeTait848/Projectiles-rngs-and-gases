@@ -1,5 +1,3 @@
-from cmath import sqrt
-from turtle import distance
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -11,7 +9,6 @@ import random as rnd
 class RandomWalker: 
 
     def __init__(self, normalised = True):
-
         self.normalised = normalised
 
 
@@ -19,9 +16,7 @@ class RandomWalker:
     def getRandomWalkValue(self):
 
         num = (rnd.random() - 0.5)*2
-
         normalisationConst = abs(num) if self.normalised == True else 1
-
         num /= normalisationConst
 
         return num
@@ -35,7 +30,6 @@ class TwoDRandomWalker(RandomWalker):
     def __init__(self, steps, normalised=True):
 
         super().__init__(normalised)
-
         self.steps = steps
 
 
@@ -43,18 +37,14 @@ class TwoDRandomWalker(RandomWalker):
     def getTwoDRandomWalkValues(self):
 
         x = np.zeros(self.steps)
-
         y = np.zeros(self.steps)
 
-    
         for i in range(1,self.steps):
 
             randomX = self.getRandomWalkValue()
-
             randomY = self.getRandomWalkValue()
 
             x[i] = x[i-1] + randomX
-
             y[i] = y[i-1] + randomY
 
         return x,y
@@ -65,19 +55,14 @@ class TwoDRandomWalker(RandomWalker):
         walkX, walkY = self.getTwoDRandomWalkValues()
 
         finalX = walkX[self.steps-1]
-
         finalY = walkY[self.steps-1]
 
         plt.plot(walkX, walkY, '-o')
-
         plt.arrow(0, 0, finalX, finalY, color = 'red', linewidth = 1)
 
         plt.xlabel('x position')
         plt.ylabel('y position')
         plt.title('Illustration of a 2D random walk')
-
-        #starting at origin so firstX = firstY = 0
-
         plt.show()
 
         
@@ -85,9 +70,7 @@ class TwoDRandomWalker(RandomWalker):
     def calculateRandomDistance(self):
 
         walkX, walkY = self.getTwoDRandomWalkValues()
-
         finalX = walkX[self.steps-1]
-
         finalY = walkY[self.steps-1]
 
         return math.sqrt(finalX**2 + finalY**2)
@@ -95,13 +78,7 @@ class TwoDRandomWalker(RandomWalker):
 
     def getRandomDistances(self, numberOfTrials):
 
-        distances = np.zeros(numberOfTrials)
-
-        for i in range(numberOfTrials):
-
-            distances[i] = self.calculateRandomDistance()
-
-
+        distances = [self.calculateRandomDistance() for _ in range(numberOfTrials)]
         return distances
 
 
@@ -109,7 +86,6 @@ class TwoDRandomWalker(RandomWalker):
     def calculateAverageDistance(self, numberOfTrials):
 
         distances = self.getRandomDistances(numberOfTrials)
-
         return sum(distances)/numberOfTrials
 
 
@@ -120,15 +96,11 @@ class MultipleTwoDrandomWalkers:
     def __init__(self, stepNumbers, numberOfTrials, normalised = True):
 
         self.numberOfTrials = numberOfTrials
-
         self.normalised = normalised
-
         self.stepNumbers = stepNumbers
-
         self.randomWalkers = []
 
         for i in range(len(stepNumbers)):
-
             self.randomWalkers.append(TwoDRandomWalker(stepNumbers[i], normalised))
 
 
@@ -137,16 +109,9 @@ class MultipleTwoDrandomWalkers:
 
         sqrtStepNumbers  = np.sqrt(self.stepNumbers)
 
-        #plots versus sqrt of number of trials
-
-        averageDistances  = np.zeros(len(self.stepNumbers))
-
-        for i in range(len(self.stepNumbers)):
-
-            averageDistances[i] = self.randomWalkers[i].calculateAverageDistance(self.numberOfTrials)
-
+        averageDistances = [self.randomWalkers[i].calculateAverageDistance(self.numberOfTrials) for i in range(len(self.stepNumbers))]
+     
         plt.plot(sqrtStepNumbers, averageDistances, '-o')
-
         plt.xlabel('sqrt(N)')
         plt.ylabel('R_av')
         plt.title('Plot of mean distance vs sqrt(N) for a set of 2D random walks of steps ' + str(self.stepNumbers))

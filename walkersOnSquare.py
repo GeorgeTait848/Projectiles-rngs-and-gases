@@ -27,8 +27,7 @@ class WalkersOnASquare:
 
     def __init__(self, lengthOfSquare, randomWalkers, numberOfTrials):
 
-        if (type(randomWalkers) != wlk.TwoDRandomWalker):
-
+        if not (type(randomWalkers) == wlk.TwoDRandomWalker):
             raise TypeError('randomWalkers must be of type TwoDrandomWalker')
 
         self.square = Square(lengthOfSquare)
@@ -38,12 +37,10 @@ class WalkersOnASquare:
 
 
     def getVertexRav(self):
-
         return self.walkers.calculateAverageDistance(self.numberOfTrials)
 
 
     def calculateMInimumAxisLimits(self):
-
         return np.sqrt(self.walkers.steps)
         
 
@@ -61,9 +58,7 @@ class WalkersOnASquare:
         ax.add_patch(plottedSquare)
 
         vertices = [self.square.topLeft, self.square.topRight, self.square.bottomLeft, self.square.bottomRight]
-
         verticesNames = ['top left', 'top right', 'bottom left', 'bottom right']
-
         colours = ['red', 'blue', 'green', 'orange']
 
 
@@ -71,9 +66,7 @@ class WalkersOnASquare:
         for i in range(len(vertices)):
 
             currentRav = self.getVertexRav()
-
             currentCircle = plt.Circle((vertices[i][0], vertices[i][1]), currentRav, fill = False, label = verticesNames[i], color = colours[i])
-
             ax.add_patch(currentCircle)
         
         plt.legend()

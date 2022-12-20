@@ -1,6 +1,3 @@
-from cProfile import label
-from turtle import st
-from markupsafe import re
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -8,8 +5,6 @@ g = 9.81
 
 
 class Projectile:
-
-    
 
     def __init__(self, v0, h, theta):
 
@@ -26,14 +21,9 @@ class Projectile:
 
     def getX(self, time):
 
-        #horizontal velocity constant
-
         return self.ux * time
 
     def getY(self, time):
-
-        #comes from eqn of motion for body with constant acceleration = -g with initial velocity uy
-
         return self.h + self.uy*time -0.5*g*time**2
 
     def getMotionData(self, timeIncrement = 0.02):
@@ -41,8 +31,6 @@ class Projectile:
         currentTime = 0
 
         xValues = []
-
-
         yValues = []
 
         currentYValue = self.getY(currentTime)
@@ -52,7 +40,6 @@ class Projectile:
             currentXValue = self.getX(currentTime)
 
             xValues.append(currentXValue)
-
             yValues.append(currentYValue)
 
             currentTime += timeIncrement
@@ -68,11 +55,8 @@ class Projectile:
 
 
         plt.plot(xValues, yValues)
-
         plt.title('Projectile path from height ' + str(self.h) + ', initial speed ' +  str(self.v0) + ', release angle ' + str(round(self.theta, 3)) + ' rad')
-
         plt.xlabel('x')
-
         plt.ylabel('y')
 
         plt.show()
@@ -83,9 +67,6 @@ class Projectile:
 def main():
 
     myProjectile = Projectile(15, 5, 5*np.pi/12)
-
-
-
     myProjectile.getProjectileMotionPlot()
 
 
